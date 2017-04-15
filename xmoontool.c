@@ -1,6 +1,8 @@
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 
 /*  Astronomical constants  */
 
@@ -51,6 +53,9 @@
 #define todeg(d) ((d) * (180.0 / PI))			  /* Rad->Deg	  */
 #define dsin(x) (sin(torad((x))))			  /* Sin from deg */
 #define dcos(x) (cos(torad((x))))			  /* Cos from deg */
+
+#define TRUE 1
+#define FALSE 0
 
 static double nptime = 0.0;	      /* Next new moon time */
 
