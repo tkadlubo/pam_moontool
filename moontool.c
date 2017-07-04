@@ -4,9 +4,11 @@
 #include <math.h>
 #include <time.h>
 
+#include "julian.h"
+
 /*  Astronomical constants  */
 
-#define epoch	    2444238.5	   /* 1980 January 0.0 */
+#define epoch	    2444237.5	   /* 1980 January 0.0 */
 
 /*  Constants defining the Sun's apparent orbit  */
 
@@ -91,9 +93,8 @@ static char luabel[2][60];	      /* Old lunation values */
 
 /*  Forward functions  */
 
-static double jtime(), phase();
+static double phase();
 static void phasehunt(), fmt_phase_time();
-static void ringgg(), jyear(), jhms();
 
 extern long time();
 extern char *icongeom();
@@ -114,90 +115,6 @@ static void fmt_phase_time(utime, buf)
 	hh, mmm, dd, moname [mm - 1], yy);
 }
 
-
-/*  JDATE  --  Convert internal GMT date and time to  Julian  day  and
-	       fraction.  */
-
-static long jdate(t)
-  struct tm *t;
-{
-    long c, m, y;
-
-    y = t->tm_year + 1900;
-    m = t->tm_mon + 1;
-    if (m > 2) {
-	m = m - 3;
-    } else {
-	m = m + 9;
-	y--;
-    }
-    c = y / 100L;		      /* Compute century */
-    y -= 100L * c;
-    return (t->tm_mday + (c * 146097L) / 4 + (y * 1461L) / 4 +
-	   (m * 153L + 2) / 5 + 1721119L);
-}
-
-
-/*  JTIME  --  Convert internal GMT  date  and	time  to  astronomical
-	       Julian	time  (i.e. Julian  date  plus	day  fraction,
-	       expressed as a double).	*/
-
-static double jtime(t)
-  struct tm *t;
-{
-    return (jdate(t) - 0.5) + 
-	   (t->tm_sec + 60 * (t->tm_min + 60 * t->tm_hour)) / 86400.0;
-}
-
-
-/*  JYEAR  --  Convert	Julian	date  to  year,  month, day, which are
-	       returned via integer pointers to integers.  */
-
-static void jyear(td, yy, mm, dd)
-  double  td;
-  int *yy, *mm, *dd;
-{
-    double j, d, y, m;
-
-    td += 0.5;			      /* Astronomical to civil */
-    j = floor(td);
-    j = j - 1721119.0;
-    y = floor(((4 * j) - 1) / 146097.0);
-    j = (j * 4.0) - (1.0 + (146097.0 * y));
-    d = floor(j / 4.0);
-    j = floor(((4.0 * d) + 3.0) / 1461.0);
-    d = ((4.0 * d) + 3.0) - (1461.0 * j);
-    d = floor((d + 4.0) / 4.0);
-    m = floor(((5.0 * d) - 3) / 153.0);
-    d = (5.0 * d) - (3.0 + (153.0 * m));
-    d = floor((d + 5.0) / 5.0);
-    y = (100.0 * y) + j;
-    if (m < 10.0) {
-	m = m + 3;
-    } else {
-	m = m - 9;
-	y = y + 1;
-    }
-    *yy = y;
-    *mm = m;
-    *dd = d;
-}
-
-
-/*  JHMS  --  Convert Julian time to hour, minutes, and seconds.  */
-
-static void jhms(j, h, m, s)
-  double j;
-  int *h, *m, *s;
-{
-    long ij;
-
-    j += 0.5;			      /* Astronomical to civil */
-    ij = (j - floor(j)) * 86400.0;
-    *h = ij / 3600L;
-    *m = (ij / 60L) % 60L;
-    *s = ij % 60L;
-}
 
 
 /*  MEANPHASE  --  Calculates  time  of  the mean new Moon for a given
