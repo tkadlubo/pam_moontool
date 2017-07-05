@@ -103,9 +103,7 @@ extern char *icongeom();
 			provided  buffer  in  UTC  format  for	screen
 			display  */
 
-static void fmt_phase_time(utime, buf)
-    double  utime;
-    char    *buf;
+static void fmt_phase_time(double utime, char *buf)
 {
     int yy, mm, dd, hh, mmm, ss;
 
@@ -125,8 +123,7 @@ static void fmt_phase_time(utime, buf)
   
 		   where year is expressed as a year and fractional year.  */
 
-static double meanphase(sdate, k)
-  double sdate, k;
+static double meanphase(double sdate, double k)
 {
     double t, t2, t3, nt1;
 
@@ -148,8 +145,7 @@ static double meanphase(sdate, k)
 		   the new moon, and a phase selector (0.0, 0.25, 0.5,
 		   0.75), obtain the true, corrected phase time.  */
 
-static double truephase(k, phase)
-  double k, phase;
+static double truephase(double k, double phase)
 {
     double t, t2, t3, pt, m, mprime, f;
     int apcor = FALSE;
@@ -233,9 +229,7 @@ static double truephase(k, phase)
 		    ending with the new moons which bound the  current
 		    lunation.  */
 
-static void phasehunt(sdate, phases)
-  double sdate;
-  double phases[5];
+static void phasehunt(double sdate, double phases[5])
 {
     double adate, k1, k2, nt1, nt2;
     int yy, mm, dd;
@@ -265,8 +259,7 @@ static void phasehunt(sdate, phases)
 
 /*  KEPLER  --	 Solve the equation of Kepler.	*/
 
-static double kepler(m, ecc)
-  double m, ecc;
+static double kepler(double m, double ecc)
 {
     double e, delta;
 #define EPSILON 1E-6
@@ -291,14 +284,15 @@ static double kepler(m, ecc)
     Earth.
 */
 
-static double phase(pdate, pphase, mage, dist, angdia, sudist, suangdia)
-  double  pdate;
-  double  *pphase;		      /* Illuminated fraction */
-  double  *mage;		      /* Age of moon in days */
-  double  *dist;		      /* Distance in kilometres */
-  double  *angdia;		      /* Angular diameter in degrees */
-  double  *sudist;		      /* Distance to Sun */
-  double  *suangdia;                  /* Sun's angular diameter */
+
+//  double  *pphase;		      /* Illuminated fraction */
+//  double  *mage;		      /* Age of moon in days */
+//  double  *dist;		      /* Distance in kilometres */
+//  double  *angdia;		      /* Angular diameter in degrees */
+//  double  *sudist;		      /* Distance to Sun */
+//  double  *suangdia;                  /* Sun's angular diameter */
+
+static double phase(double pdate, double *pphase, double *mage, double *dist, double *angdia, double *sudist, double *suangdia)
 {
 
     double Day, N, M, Ec, Lambdasun, ml, MM, MN, Ev, Ae, A3, MmP,
