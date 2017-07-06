@@ -59,15 +59,15 @@
 #define TRUE 1
 #define FALSE 0
 
-static double nptime = 0.0;	      /* Next new moon time */
+double nptime = 0.0;	      /* Next new moon time */
 
-static char *moname[] = {
+char *moname[] = {
     "January", "February", "March", "April", "May",
     "June", "July", "August", "September",
     "October", "November", "December"
 };
 
-static char *labels[] = {
+char *labels[] = {
     "Julian date:",
     "Universal time:",
     "Local time:",
@@ -88,13 +88,13 @@ static char *labels[] = {
 };
 #define Nlabels ((sizeof labels) / sizeof(char *))
 
-static char olabel[Nlabels][60];      /* Old label values */
-static char luabel[2][60];	      /* Old lunation values */
+char olabel[Nlabels][60];      /* Old label values */
+char luabel[2][60];	      /* Old lunation values */
 
 /*  Forward functions  */
 
-static double phase();
-static void phasehunt(), fmt_phase_time();
+double phase();
+void phasehunt(), fmt_phase_time();
 
 extern long time();
 extern char *icongeom();
@@ -103,7 +103,7 @@ extern char *icongeom();
 			provided  buffer  in  UTC  format  for	screen
 			display  */
 
-static void fmt_phase_time(double utime, char *buf)
+void fmt_phase_time(double utime, char *buf)
 {
     int yy, mm, dd, hh, mmm, ss;
 
@@ -123,7 +123,7 @@ static void fmt_phase_time(double utime, char *buf)
   
 		   where year is expressed as a year and fractional year.  */
 
-static double meanphase(double sdate, double k)
+double meanphase(double sdate, double k)
 {
     double t, t2, t3, nt1;
 
@@ -145,7 +145,7 @@ static double meanphase(double sdate, double k)
 		   the new moon, and a phase selector (0.0, 0.25, 0.5,
 		   0.75), obtain the true, corrected phase time.  */
 
-static double truephase(double k, double phase)
+double truephase(double k, double phase)
 {
     double t, t2, t3, pt, m, mprime, f;
     int apcor = FALSE;
@@ -229,7 +229,7 @@ static double truephase(double k, double phase)
 		    ending with the new moons which bound the  current
 		    lunation.  */
 
-static void phasehunt(double sdate, double phases[5])
+void phasehunt(double sdate, double phases[5])
 {
     double adate, k1, k2, nt1, nt2;
     int yy, mm, dd;
@@ -259,7 +259,7 @@ static void phasehunt(double sdate, double phases[5])
 
 /*  KEPLER  --	 Solve the equation of Kepler.	*/
 
-static double kepler(double m, double ecc)
+double kepler(double m, double ecc)
 {
     double e, delta;
 #define EPSILON 1E-6
@@ -292,7 +292,7 @@ static double kepler(double m, double ecc)
 //  double  *sudist;		      /* Distance to Sun */
 //  double  *suangdia;                  /* Sun's angular diameter */
 
-static double phase(double pdate, double *pphase, double *mage, double *dist, double *angdia, double *sudist, double *suangdia)
+double phase(double pdate, double *pphase, double *mage, double *dist, double *angdia, double *sudist, double *suangdia)
 {
 
     double Day, N, M, Ec, Lambdasun, ml, MM, MN, Ev, Ae, A3, MmP,
