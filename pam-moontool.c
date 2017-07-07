@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "julian.h"
+#include "moontool.h"
 
 /* PAM entry point for accounting */
 int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int argc, const char **argv) {
@@ -18,5 +19,13 @@ int pam_sm_acct_mgmt(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	struct tm* cur_gmt_time = gmtime(&cur_time);
 	double cur_julian_time = jtime(cur_gmt_time);
 
-	return(PAM_IGNORE);
+	double phases[5];
+
+	phasehunt(cur_julian_time, phases);
+	double fullmoon_time = phases[2];
+	if ((cur_julian_time - fullmoon_time) < 1) {
+		return PAM_PERM_DENIED;
+	}
+
+	return PAM_IGNORE;
 }
