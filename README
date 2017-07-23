@@ -1,3 +1,14 @@
+Pam_moontool is a PAM module that denies access during full Moon.
+Because werewolves.
+
+Example usage: place the following line in your PAM configuration for the
+service you wish to protect.
+
+    account  required       pam_moontool.so
+
+Pam_moontool is based on astronomical code from Moontool 3.1 SunOS GUI widget
+by John Walker and Ron Hitchens. Below is a note by the original authors:
+
 
                              Moontool 3.1
 
